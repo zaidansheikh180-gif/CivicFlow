@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './components/layout/AppLayout';
+import CustomCursor from './components/ui/CustomCursor';
 import LandingPage from './pages/LandingPage';
 import ExplorePage from './pages/ExplorePage';
 import SuggestPage from './pages/SuggestPage';
@@ -29,6 +30,9 @@ export const App: React.FC = () => {
 
   return (
     <BrowserRouter>
+      {/* Smooth Custom 3D Cursor Ring & Glow */}
+      <CustomCursor />
+
       <AppLayout
         currentRole={currentRole}
         onRoleChange={setCurrentRole}

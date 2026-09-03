@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { SuggestionWithDetails, STATUS_CONFIG, SEED_CATEGORIES } from '../types/domain';
-import { Search, Filter, Grid, Map, ThumbsUp, MessageSquare, PlusCircle } from 'lucide-react';
+import { Card3D } from '../components/ui/Card3D';
+import { Search, Grid, Map, ThumbsUp, MessageSquare, PlusCircle } from 'lucide-react';
 
 interface ExplorePageProps {
   suggestions: SuggestionWithDetails[];
@@ -52,12 +53,12 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
         <div className="flex items-center gap-3">
           {/* View Toggle */}
-          <div className="bg-slate-900/90 p-1 rounded-lg border border-slate-800 flex items-center gap-1">
+          <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center gap-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-blue-500 text-white shadow'
+                  ? 'bg-blue-500 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -67,9 +68,9 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
             <button
               onClick={() => setViewMode('spatial')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 viewMode === 'spatial'
-                  ? 'bg-blue-500 text-white shadow'
+                  ? 'bg-blue-500 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -87,7 +88,6 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
       {/* Search & Filter Bar */}
       <div className="glass-panel p-4 flex flex-col md:flex-row gap-4 items-center">
-        {/* Search Bar */}
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -99,12 +99,11 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
           />
         </div>
 
-        {/* Category Filter */}
         <div className="w-full md:w-48">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="input-field cursor-pointer"
+            className="input-field cursor-pointer text-xs"
           >
             <option value="all">All Categories</option>
             {SEED_CATEGORIES.map((cat) => (
@@ -115,12 +114,11 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
           </select>
         </div>
 
-        {/* Status Filter */}
         <div className="w-full md:w-48">
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="input-field cursor-pointer"
+            className="input-field cursor-pointer text-xs"
           >
             <option value="all">All Statuses</option>
             <option value="submitted">Submitted</option>
@@ -160,11 +158,11 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
               const isSelected = selectedId === sug.id;
 
               return (
-                <div
+                <Card3D
                   key={sug.id}
                   onClick={() => onSelectSuggestion(sug)}
-                  className={`glass-panel glass-panel-interactive p-6 flex flex-col justify-between ${
-                    isSelected ? 'ring-2 ring-blue-500 bg-blue-950/20' : ''
+                  className={`glass-panel p-6 flex flex-col justify-between h-full ${
+                    isSelected ? 'ring-2 ring-blue-500 bg-blue-950/30' : ''
                   }`}
                 >
                   <div>
@@ -189,20 +187,20 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                  <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
                     <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                      <span className="flex items-center gap-1 text-emerald-400 font-bold">
                         <ThumbsUp className="w-3.5 h-3.5" />
                         <span>{sug.support_count}</span>
                       </span>
                       <span className="flex items-center gap-1">
-                        <MessageSquare className="w-3.5 h-3.5" />
+                        <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
                         <span>{sug.comment_count}</span>
                       </span>
                     </div>
-                    <span className="text-slate-500">{sug.neighborhood?.name}</span>
+                    <span className="text-slate-500 font-medium">{sug.neighborhood?.name}</span>
                   </div>
-                </div>
+                </Card3D>
               );
             })
           ) : (
@@ -226,14 +224,14 @@ export const ExplorePage: React.FC<ExplorePageProps> = ({
 
       {/* Spatial 3D Overlay View Notice */}
       {viewMode === 'spatial' && (
-        <div className="glass-panel p-6 text-center space-y-3">
-          <p className="text-sm font-semibold text-blue-400">
+        <Card3D className="glass-panel p-8 text-center space-y-3">
+          <p className="text-sm font-bold text-blue-400">
             3D Spatial View Active
           </p>
-          <p className="text-xs text-slate-300 max-w-lg mx-auto">
-            Interact directly with the 3D canvas floating markers. Hover over any glowing node to preview the proposal details or click to view its lifecycle.
+          <p className="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed">
+            Interact directly with the floating 3D crystals on the canvas. Hover over any node to preview proposal metadata or click to navigate directly into its lifecycle timeline.
           </p>
-        </div>
+        </Card3D>
       )}
 
     </div>
